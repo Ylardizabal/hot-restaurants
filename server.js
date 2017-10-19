@@ -5,9 +5,12 @@ var path = require("path");
 // Sets up the Express App
 // =============================================================
 var app = express();
+// sets a port to see what is there env or go to hard code port
+// must do env first
 var PORT = process.env.PORT || 3000;
 
-// Sets up the Express app to handle data parsing
+// Middle ware Sets up the Express app to handle data parsing
+// take the front end data and parse as json
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -19,9 +22,12 @@ var reservations = [
     phoneNumber: "555-555-1234",
     email: "marker@gmail.com",
     uniqueID: 100,
-     },
+     }
   
 ];
+
+var waitlist = [];
+
 
 // Routes
 // =============================================================
@@ -39,15 +45,12 @@ app.get("/hot_restaurant", function(req, res) {
   res.sendFile(path.join(__dirname, "hot_restaurant.html"));
 });
 
-// Display the stored
-app.get("/api/:reservations?", function(req, res) {
-  var chosen = req.params.reservations;
-console.log(chosen);
- });
 
-//API get
-app.get("/api/tables", function(req, res) {
+//API get routes
+app.get("/api/reservations", function(req, res) {
   res.json(tables);
+
+})
 
  app.get("/api/waitlist", function(req, res) {
   res.json(waitlist); 
@@ -60,15 +63,19 @@ app.post("/api/new", function(req, res) {
   // This works because of our body-parser middleware
   var newreservation= req.body;
   
-  if(tables.length <5) {
+  if(reservations.length <5) {
+    reservations.push(newreservation);
+
     
   }
 
+  else {
+    waitlist.push(newreservation);
+  }
+ res.json(newreservation);
   console.log(newreservation);
 
-  reservation.push(newreservation);
-
-  res.json(newreservation);
+ 
 });
 
 // Starts the server to begin listening
