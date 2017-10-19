@@ -26,13 +26,17 @@ var reservations = [
   
 ];
 
+module.exports = reservations;
+
 var waitlist = [];
+
+module.exports = waitlist;
 
 
 // Routes
 // =============================================================
 
-// Basic route that sends the user first to the AJAX Page
+// Basic html route that sends the user first to the AJAX Page
 app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "index.html"));
 });
@@ -45,10 +49,15 @@ app.get("/hot_restaurant", function(req, res) {
   res.sendFile(path.join(__dirname, "hot_restaurant.html"));
 });
 
+// catch-all
+app.get("*", function(req, res){
+  res.sendFile(path.join(__dirname, "hot_restaurant.html"));
+});
+
 
 //API get routes
 app.get("/api/reservations", function(req, res) {
-  res.json(tables);
+  res.json(reservations);
 
 })
 
@@ -57,7 +66,7 @@ app.get("/api/reservations", function(req, res) {
 })
 
 
-// Create New Reservations - takes in JSON input
+// POST ROUTE Create New Reservations - takes in JSON input
 app.post("/api/new", function(req, res) {
   // req.body hosts is equal to the JSON post sent from the user
   // This works because of our body-parser middleware
