@@ -45,12 +45,24 @@ app.get("/api/:reservations?", function(req, res) {
 console.log(chosen);
  });
 
+//API get
+app.get("/api/tables", function(req, res) {
+  res.json(tables);
+
+ app.get("/api/waitlist", function(req, res) {
+  res.json(waitlist); 
+})
+
+
 // Create New Reservations - takes in JSON input
 app.post("/api/new", function(req, res) {
   // req.body hosts is equal to the JSON post sent from the user
   // This works because of our body-parser middleware
   var newreservation= req.body;
-  newreservation.routeName = newreservation.name.replace(/\s+/g, "").toLowerCase();
+  
+  if(tables.length <5) {
+    
+  }
 
   console.log(newreservation);
 
